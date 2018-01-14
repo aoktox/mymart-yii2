@@ -46,4 +46,6 @@ return [
         */
     ],
     'params' => $params,
+    'defaultRoute' => 'item/index',
+    'name' => 'Toko Baru'
 ];
