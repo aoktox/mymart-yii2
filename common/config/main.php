@@ -15,5 +15,9 @@ return [
             'rules' => [
             ],
         ],
+        'CustomComponent'=>[
+            'class' => 'common\components\CustomComponent',
+            'on event-after' => [ 'common\components\CustomComponent', 'addToStatistic' ]
+        ]
     ],
 ];
