@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -94,5 +95,14 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionDaftar(){
+        $user = new User();
+        $user->email="agus@qlapa.com";
+        $user->username="agus";
+        $user->generateAuthKey();
+        $user->setPassword("rahasia");
+        $user->save();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use app\models\OrderItem;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -12,14 +13,18 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id
  * @property string $name
  * @property int $price
+ * @property string $picture
  * @property int $category_id
  * @property int $created_at
  * @property int $updated_at
  * @property int $created_by
  * @property int $updated_by
+ *
+ * @property OrderItem[] $orderItems
  */
 class Item extends \yii\db\ActiveRecord
 {
+    public $upload;
     public function behaviors()
     {
         return [
@@ -43,6 +48,7 @@ class Item extends \yii\db\ActiveRecord
         return [
             [['price', 'category_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['upload'], 'file', 'extensions' => ['png','jpg']],
         ];
     }
 
@@ -55,11 +61,21 @@ class Item extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'price' => 'Price',
+            'picture' => 'Picture',
             'category_id' => 'Category ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
+            'upload' => 'Item Preview',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrderItems()
+    {
+        return $this->hasMany(OrderItem::className(), ['item_id' => 'id']);
     }
 }
