@@ -49,6 +49,7 @@ class Item extends \yii\db\ActiveRecord
             [['price', 'category_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['upload'], 'file', 'extensions' => ['png','jpg']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ItemCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
@@ -77,5 +78,24 @@ class Item extends \yii\db\ActiveRecord
     public function getOrderItems()
     {
         return $this->hasMany(OrderItem::className(), ['item_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(ItemCategory::className(), ['id' => 'category_id']);
+    }
+
+    public function getPriceRupiah(){
+        return 'Rp'.number_format($this->price,2,',','.');
+    }
+
+    public function getImagePre(){
+        if (!$pic = $this->picture){
+            $pic = 'uploads/no_pic.jpg';
+        }
+        return Yii::$app->request->hostInfo.'/'.$pic;
     }
 }
