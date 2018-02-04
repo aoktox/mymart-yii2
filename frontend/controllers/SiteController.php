@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Item;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -26,7 +27,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup','checkout'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -35,6 +36,11 @@ class SiteController extends Controller
                     ],
                     [
                         'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['checkout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -72,7 +78,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $items = Item::find()->with('category')->all();
+        return $this->render('index',[
+            'items' => $items
+        ]);
     }
 
     /**
@@ -209,5 +218,9 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCheckout(){
+        return $this->render('checkout');
     }
 }

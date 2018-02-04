@@ -1,16 +1,16 @@
 <?php
 
-namespace common\models;
+namespace app\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Item;
+use app\models\Order;
 
 /**
- * ItemSearch represents the model behind the search form of `common\models\Item`.
+ * OrderSearch represents the model behind the search form of `app\models\Order`.
  */
-class ItemSearch extends Item
+class OrderSearch extends Order
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class ItemSearch extends Item
     public function rules()
     {
         return [
-            [['id', 'price', 'category_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'customer_id'], 'integer'],
+            [['date'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ItemSearch extends Item
      */
     public function search($params)
     {
-        $query = Item::find();
+        $query = Order::find();
 
         // add conditions that should always apply here
 
@@ -60,15 +60,9 @@ class ItemSearch extends Item
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'price' => $this->price,
-            'category_id' => $this->category_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
+            'date' => $this->date,
+            'customer_id' => $this->customer_id,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }
