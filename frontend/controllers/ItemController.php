@@ -40,6 +40,7 @@ class ItemController extends Controller
     {
 //        $this->addToStatistic(Yii::$app->request);
         Yii::$app->CustomComponent->trigger(CustomComponent::EVENT_AFTER);
+
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -59,35 +60,9 @@ class ItemController extends Controller
     {
         Yii::$app->CustomComponent->trigger(CustomComponent::EVENT_AFTER);
 
-        return $this->render('view', [
+      return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
-    /**
-     * Finds the Item model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Item the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Item::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    private function addToStatistic($param){
-        $statistic = new Statistic();
-        $statistic->access_time = date('Y-m-d H:i:s');
-        $statistic->user_ip = $param->userIP;
-        $statistic->user_host = $param->userHost;
-        $statistic->path_info = $param->pathInfo;
-        $statistic->query_string = $param->queryString;
-
-        $statistic->save();
     }
 
     /**
@@ -126,5 +101,46 @@ class ItemController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+  
+    /**
+     * Deletes an existing Item model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+  
+    /**
+     * Finds the Item model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Item the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Item::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function addToStatistic($param){
+        $statistic = new Statistic();
+        $statistic->access_time = date('Y-m-d H:i:s');
+        $statistic->user_ip = $param->userIP;
+        $statistic->user_host = $param->userHost;
+        $statistic->path_info = $param->pathInfo;
+        $statistic->query_string = $param->queryString;
+
+        $statistic->save();
     }
 }

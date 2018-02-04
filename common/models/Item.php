@@ -32,6 +32,7 @@ class Item extends \yii\db\ActiveRecord
             TimestampBehavior::className()
         ];
     }
+
     /**
      * @inheritdoc
      */
