@@ -11,7 +11,9 @@ $nameAttribute = $generator->getNameAttribute();
 
 echo "<?php\n";
 ?>
-/* Agus Prasetiyo - 2110177018 */
+
+/* AGUS PRASETIYO - 2110177018 - D4 LJ PJJ 2017 */
+
 use yii\helpers\Html;
 use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 <?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>

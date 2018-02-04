@@ -2,8 +2,9 @@
 
 namespace frontend\controllers;
 
-/* Agus Prasetiyo - 2110177018 */
-
+/* AGUS PRASETIYO - 2110177018 - D4 LJ PJJ 2017 */
+use common\components\CustomComponent;
+use common\models\Statistic;
 use Yii;
 use common\models\Item;
 use common\models\ItemSearch;
@@ -37,6 +38,9 @@ class ItemController extends Controller
      */
     public function actionIndex()
     {
+//        $this->addToStatistic(Yii::$app->request);
+        Yii::$app->CustomComponent->trigger(CustomComponent::EVENT_AFTER);
+
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -54,7 +58,9 @@ class ItemController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        Yii::$app->CustomComponent->trigger(CustomComponent::EVENT_AFTER);
+
+      return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -96,7 +102,7 @@ class ItemController extends Controller
             'model' => $model,
         ]);
     }
-
+  
     /**
      * Deletes an existing Item model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -110,7 +116,7 @@ class ItemController extends Controller
 
         return $this->redirect(['index']);
     }
-
+  
     /**
      * Finds the Item model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -125,5 +131,16 @@ class ItemController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function addToStatistic($param){
+        $statistic = new Statistic();
+        $statistic->access_time = date('Y-m-d H:i:s');
+        $statistic->user_ip = $param->userIP;
+        $statistic->user_host = $param->userHost;
+        $statistic->path_info = $param->pathInfo;
+        $statistic->query_string = $param->queryString;
+
+        $statistic->save();
     }
 }

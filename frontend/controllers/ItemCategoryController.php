@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-/* Agus Prasetiyo - 2110177018 */
+/* AGUS PRASETIYO - 2110177018 - D4 LJ PJJ 2017 */
 
 use Yii;
 use common\models\ItemCategory;
